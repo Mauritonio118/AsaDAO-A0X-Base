@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { Providers } from "../components/providers"
 import "./globals.css"
+import { Wallet } from '@coinbase/onchainkit/wallet';
 
 export const metadata: Metadata = {
   title: "AsaDAO A0X - Base Hackathon",
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Providers>
           <Suspense fallback={null}>{children}</Suspense>
+          <Wallet />
         </Providers>
         <Analytics />
       </body>
