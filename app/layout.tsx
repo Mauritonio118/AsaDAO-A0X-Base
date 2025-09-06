@@ -1,23 +1,33 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import { Providers } from "../components/providers"
-import '@coinbase/onchainkit/styles.css';
-import "./globals.css"
+'use client';
 
-export const metadata: Metadata = {
-  title: "AsaDAO A0X - Base Hackathon",
-  description: "AsaDAO A0X - Building the future on Base blockchain",
-  generator: "v0.app",
-}
+import type React from "react";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import { Providers } from "../components/providers";
+import { useEffect } from "react";
+import { sdk } from "@farcaster/miniapp-sdk";   // importa el SDK
+import '@coinbase/onchainkit/styles.css';
+import "./globals.css";
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    const showApp = async () => {
+      try {
+        await sdk.actions.ready();
+        console.log("MiniApp is ready and splash screen hidden ✅");
+      } catch (err) {
+        console.error("Error calling sdk.actions.ready()", err);
+      }
+    };
+
+    showApp();
+  }, []);
+
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
@@ -27,5 +37,5 @@ export default function RootLayout({
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
