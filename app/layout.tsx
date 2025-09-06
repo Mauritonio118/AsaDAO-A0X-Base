@@ -2,16 +2,12 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
-import { Providers } from "../components/providers"
-import { WalletConnect } from "../components/WalletConnect"
 import "./globals.css"
 
 export const metadata: Metadata = {
   title: "AsaDAO A0X - Base Hackathon",
   description: "AsaDAO A0X - Building the future on Base blockchain",
-  generator: "v0.app",
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -20,16 +16,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Providers>
-          <Suspense fallback={null}>
-            <WalletConnect />
-          </Suspense>
-          {children}
-        </Providers>
-        <Analytics />
-      </body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }

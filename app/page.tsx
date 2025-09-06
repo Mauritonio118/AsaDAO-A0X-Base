@@ -5,11 +5,8 @@ export default function HomePage() {
         <div className="text-center space-y-8">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground">AsaDAO A0X</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Building the future of AsaDAO in Base - Hackathon Project
+            Building the future of AsaDAO on Base - Hackathon Project
           </p>
-          <div className="flex justify-center gap-4">
-
-          </div>
         </div>
       </div>
     </main>
