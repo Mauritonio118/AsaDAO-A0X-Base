@@ -3,9 +3,8 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
 import { Providers } from "../components/providers"
-import { WalletConnect } from "../components/WalletConnect"
+import '@coinbase/onchainkit/styles.css';
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -23,9 +22,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Providers>
-          <Suspense fallback={null}>
-            <WalletConnect />
-          </Suspense>
           {children}
         </Providers>
         <Analytics />
