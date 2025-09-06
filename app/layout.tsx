@@ -8,8 +8,6 @@ import { Providers } from "../components/providers"
 import { WalletConnect } from "../components/WalletConnect"
 import "./globals.css"
 
-
-
 export const metadata: Metadata = {
   title: "AsaDAO A0X - Base Hackathon",
   description: "AsaDAO A0X - Building the future on Base blockchain",
@@ -25,7 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Providers>
-          <WalletConnect >
+          <Suspense fallback={null}>
+            <WalletConnect />
+          </Suspense>
+          {children}
         </Providers>
         <Analytics />
       </body>
