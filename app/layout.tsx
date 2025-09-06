@@ -1,12 +1,11 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
-import "@coinbase/onchainkit/styles.css"
-import "./globals.css"
-import { Providers } from "../components/providers"
+import type React from "react";
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
+import "@coinbase/onchainkit/styles.css";
+import { Providers } from "../components/providers";
 
 export const metadata: Metadata = {
   title: "AsaDAO A0X - Base Hackathon",
