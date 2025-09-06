@@ -1,3 +1,6 @@
+
+import { Wallet } from "@coinbase/onchainkit/wallet"
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-background">
@@ -8,7 +11,7 @@ export default function HomePage() {
             Building the future of AsaDAO in Base - Hackathon Project
           </p>
           <div className="flex justify-center gap-4">
-
+          <Wallet />
           </div>
         </div>
       </div>
