@@ -7,6 +7,7 @@ import { Suspense } from "react"
 import { Providers } from "../components/providers"
 import "./globals.css"
 import { Wallet } from '@coinbase/onchainkit/wallet';
+import '@coinbase/onchainkit/styles.css'; 
 
 export const metadata: Metadata = {
   title: "AsaDAO A0X - Base Hackathon",
