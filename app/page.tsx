@@ -1,5 +1,30 @@
 
 import { CoalBuyBurn } from "@/components/CoalBuyBurn"
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const embed = {
+    "version": "1",
+    "imageUrl": "https://www.ahumadores.cl/wp-content/uploads/ribs-bqq-costillar.jpg",
+    "button": {
+      "title": "AsaDAO", 
+      "action": {
+        "name": "Open AsaDAO",
+        "type": "launch_frame",
+        "url": "https://v0-asa-dao-a0-x-base-hackathon.vercel.app/"
+      }
+    }
+  };
+
+  return {
+    // Claves personalizadas en <meta name="...">
+    other: {
+      "fc:miniapp": JSON.stringify(embed),
+      // compatibilidad con clientes antiguos:
+      "fc:frame": JSON.stringify(embed)
+    }
+  };
+}
 
 export default function HomePage() {
   return (
