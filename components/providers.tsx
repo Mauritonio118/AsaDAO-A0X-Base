@@ -4,6 +4,7 @@
 import type { ReactNode } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { base } from 'wagmi/chains'; // add baseSepolia for testing
+import { WalletProvider } from './WalletProvider';
 
 export function Providers(props: { children: ReactNode }) {
   return (
@@ -11,7 +12,8 @@ export function Providers(props: { children: ReactNode }) {
       apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
       chain={base} // add baseSepolia for testing
     >
-      {props.children}
+      
+      <WalletProvider> {props.children} </WalletProvider>
     </OnchainKitProvider>
   );
 }
