@@ -6,8 +6,7 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "../components/providers";
 import { useEffect } from "react";
-import { sdk } from "@farcaster/miniapp-sdk";   // importa el SDK
-import '@coinbase/onchainkit/styles.css';
+import { sdk } from "@farcaster/miniapp-sdk";
 import "./globals.css";
 
 export default function RootLayout({

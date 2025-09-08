@@ -1,5 +1,5 @@
 
-import { Wallet } from "@coinbase/onchainkit/wallet"
+import { CoalBuyBurn } from "@/components/CoalBuyBurn"
 
 export default function HomePage() {
   return (
@@ -11,7 +11,7 @@ export default function HomePage() {
             Building the future of AsaDAO in Base - Hackathon Project
           </p>
           <div className="flex justify-center gap-4">
-          <Wallet />
+          <CoalBuyBurn />
           </div>
         </div>
       </div>

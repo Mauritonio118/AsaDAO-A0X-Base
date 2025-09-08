@@ -55,7 +55,6 @@ export function CoalBuyBurn() {
           type: "ERC20",
           options: {
             address: TOKENS.COAL.address,
-            symbol: TOKENS.COAL.symbol,
             decimals: TOKENS.COAL.decimals,
             image: "",
           },
@@ -320,7 +319,11 @@ export function CoalBuyBurn() {
           {canApprove ? (
             <button
               onClick={approveUSDC}
-              disabled={purchaseState.isApproving || !purchaseState.usdcQuote}
+              disabled={
+                purchaseState.isApproving || !(
+                  purchaseState.usdcQuote ? purchaseState.usdcQuote > BigInt(0) : false
+                )
+              }
               className="w-full p-5 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-2xl hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 font-semibold text-lg shadow-lg shadow-yellow-500/25"
             >
               {purchaseState.isApproving ? (
@@ -349,7 +352,7 @@ export function CoalBuyBurn() {
           ) : (
             <button
               onClick={buyCOAL}
-              disabled={!canBuy || purchaseState.isBuying || hasInsufficientBalance}
+              disabled={!canBuy || purchaseState.isBuying || !!hasInsufficientBalance}
               className="w-full p-5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 font-semibold flex items-center justify-center gap-3 shadow-lg shadow-orange-500/25 text-lg"
             >
               {purchaseState.isBuying ? (
@@ -451,7 +454,7 @@ export function CoalBuyBurn() {
           </div>
           <button
             onClick={setMaxAmount}
-            disabled={maxTokens === 0}
+            disabled={Number(maxTokens ?? 0) === 0}
             className="px-8 py-5 bg-slate-700/80 backdrop-blur-sm text-slate-300 rounded-2xl hover:bg-slate-600/80 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg shadow-slate-900/20"
           >
             MAX
