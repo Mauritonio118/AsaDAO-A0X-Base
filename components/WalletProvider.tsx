@@ -1,7 +1,14 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react"
-import { BASE_MAINNET, BASE_SEPOLIA, isBaseNetwork } from "@/lib/network-config"
+import { createContext, useContext, useCallback, type ReactNode } from "react"
+import { BASE_MAINNET, isBaseNetwork } from "@/lib/network-config"
+import {
+  useAccount,
+  useChainId,
+  useConnect,
+  useDisconnect,
+  useSwitchChain,
+} from "wagmi"
 
 interface WalletState {
   address: string | null
@@ -21,121 +28,31 @@ interface WalletContextType extends WalletState {
 const WalletContext = createContext<WalletContextType | undefined>(undefined)
 
 const BASE_CHAIN_ID = BASE_MAINNET.chainId
-const BASE_TESTNET_CHAIN_ID = BASE_SEPOLIA.chainId
 
 interface WalletProviderProps {
   children: ReactNode
 }
 
 export function WalletProvider({ children }: WalletProviderProps) {
-  const [wallet, setWallet] = useState<WalletState>({
-    address: null,
-    isConnected: false,
-    chainId: null,
-    isConnecting: false,
-    error: null,
-  })
+  const { address, isConnected } = useAccount()
+  const chainId = useChainId()
+  const { connect, connectors, isPending, error: connectError } = useConnect()
+  const { disconnect } = useDisconnect()
+  const { switchChain } = useSwitchChain()
 
-  const checkConnection = useCallback(async () => {
-    if (typeof window !== "undefined" && window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_accounts" })
-        const chainId = await window.ethereum.request({ method: "eth_chainId" })
-
-        const normalizedChainId = chainId.startsWith("0x") ? Number.parseInt(chainId, 16) : Number(chainId)
-
-        if (accounts.length > 0) {
-          setWallet((prev) => ({
-            ...prev,
-            address: accounts[0],
-            isConnected: true,
-            chainId: normalizedChainId,
-            error: null,
-          }))
-        } else {
-          setWallet((prev) => ({
-            ...prev,
-            address: null,
-            isConnected: false,
-            chainId: normalizedChainId,
-          }))
-        }
-      } catch (error) {
-        console.error("Error checking wallet connection:", error)
-      }
-    }
-  }, [])
-
-  const connectWallet = async () => {
-    if (!window.ethereum) {
-      setWallet((prev) => ({ ...prev, error: "MetaMask not installed" }))
-      return
-    }
-
-    setWallet((prev) => ({ ...prev, isConnecting: true, error: null }))
-
-    try {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      })
-
-      const chainId = await window.ethereum.request({ method: "eth_chainId" })
-
-      setWallet((prev) => ({
-        ...prev,
-        address: accounts[0],
-        isConnected: true,
-        chainId: Number.parseInt(chainId, 16),
-        isConnecting: false,
-        error: null,
-      }))
-    } catch (error: any) {
-      setWallet((prev) => ({
-        ...prev,
-        isConnecting: false,
-        error: error.message || "Failed to connect wallet",
-      }))
-    }
-  }
+  const connectWallet = useCallback(async () => {
+    await connect({ connector: connectors[0] })
+  }, [connect, connectors])
 
   const disconnectWallet = useCallback(async () => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({
-          method: "wallet_revokePermissions",
-          params: [{ eth_accounts: {} }],
-        })
-      } catch (error) {
-        try {
-          if (window.ethereum.disconnect) {
-            await window.ethereum.disconnect()
-          }
-        } catch (disconnectError) {
-          console.log("Disconnect method not available, clearing local state only")
-        }
-      }
-    }
+    disconnect()
+  }, [disconnect])
 
-    setWallet({
-      address: null,
-      isConnected: false,
-      chainId: null,
-      isConnecting: false,
-      error: null,
-    })
-  }, [])
-
-  const switchToBase = async () => {
-    if (!window.ethereum) return
-
+  const switchToBase = useCallback(async () => {
     try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: `0x${BASE_CHAIN_ID.toString(16)}` }],
-      })
-      await checkConnection()
+      await switchChain({ chainId: BASE_CHAIN_ID })
     } catch (error: any) {
-      if (error.code === 4902) {
+      if (error?.code === 4902 && window.ethereum) {
         try {
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
@@ -153,66 +70,24 @@ export function WalletProvider({ children }: WalletProviderProps) {
               },
             ],
           })
-          await checkConnection()
+          await switchChain({ chainId: BASE_CHAIN_ID })
         } catch (addError) {
           console.error("Error adding Base network:", addError)
         }
-      }
-      await checkConnection()
-    }
-  }
-
-  const isOnBase = isBaseNetwork(wallet.chainId)
-
-  useEffect(() => {
-    console.log("[v0] WalletProvider useEffect - setting up event listeners")
-    checkConnection()
-
-    if (window.ethereum) {
-      const handleAccountsChanged = (accounts: string[]) => {
-        console.log("[v0] Accounts changed:", accounts)
-        if (accounts.length === 0) {
-          disconnectWallet()
-        } else {
-          setWallet((prev) => ({ ...prev, address: accounts[0] }))
-        }
-      }
-
-      const handleChainChanged = (chainId: string) => {
-        console.log("[v0] Chain changed event received:", chainId)
-        const id = chainId.startsWith("0x") ? Number.parseInt(chainId, 16) : Number(chainId)
-        console.log("[v0] Converted chainId to number:", id)
-        console.log("[v0] Previous wallet state:", wallet)
-        setWallet((prev) => {
-          const newState = { ...prev, chainId: id }
-          console.log("[v0] New wallet state:", newState)
-          return newState
-        })
-        console.log("[v0] Calling checkConnection after chain change")
-        checkConnection()
-      }
-
-      const handleDisconnect = () => {
-        console.log("[v0] Disconnect event received")
-        disconnectWallet()
-      }
-
-      console.log("[v0] Registering ethereum event listeners")
-      window.ethereum.on("accountsChanged", handleAccountsChanged)
-      window.ethereum.on("chainChanged", handleChainChanged)
-      window.ethereum.on("disconnect", handleDisconnect)
-
-      return () => {
-        console.log("[v0] Cleaning up ethereum event listeners")
-        window.ethereum.removeListener("accountsChanged", handleAccountsChanged)
-        window.ethereum.removeListener("chainChanged", handleChainChanged)
-        window.ethereum.removeListener("disconnect", handleDisconnect)
+      } else {
+        console.error("Error switching network:", error)
       }
     }
-  }, [checkConnection, disconnectWallet])
+  }, [switchChain])
+
+  const isOnBase = isBaseNetwork(chainId)
 
   const contextValue: WalletContextType = {
-    ...wallet,
+    address: address ?? null,
+    isConnected,
+    chainId: chainId ?? null,
+    isConnecting: isPending,
+    error: connectError?.message ?? null,
     connectWallet,
     disconnectWallet,
     switchToBase,
