@@ -1,0 +1,22 @@
+{
+    "frame": {
+      "name": "AsaDAO",
+      "version": "1",
+      "iconUrl": "https://v0-asa-dao-a0-x-base-hackathon-lkxu2v5va.vercel.app/icon.png",
+      "homeUrl": "https://v0-asa-dao-a0-x-base-hackathon-lkxu2v5va.vercel.app",
+      "imageUrl": "https://v0-asa-dao-a0-x-base-hackathon-lkxu2v5va.vercel.app/image.png",
+      "splashImageUrl": "https://v0-asa-dao-a0-x-base-hackathon-lkxu2v5va.vercel.app/splash.png",
+      "splashBackgroundColor": "#6200EA",
+      "webhookUrl": "https://v0-asa-dao-a0-x-base-hackathon-lkxu2v5va.vercel.app/api/webhook",
+      "subtitle": "The DAO that host barbecues",
+      "description": "Mini app for A0X and Base hackathon",
+      "primaryCategory": "utility"
+    },
+    "accountAssociation": {
+      "header": "",
+      "payload": "",
+      "signature": ""
+    }
+  }
+  
+  

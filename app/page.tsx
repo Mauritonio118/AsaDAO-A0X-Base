@@ -1,11 +1,12 @@
 
 import { CoalBuyBurn } from "@/components/CoalBuyBurn"
+import Image from "next/image"
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const embed = {
     "version": "1",
-    "imageUrl": "https://www.ahumadores.cl/wp-content/uploads/ribs-bqq-costillar.jpg",
+    "imageUrl": "https://v0-asa-dao-a0-x-base-hackathon.vercel.app/MiniAsaDAO.jpg",
     "button": {
       "title": "AsaDAO", 
       "action": {
@@ -26,20 +27,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function HomePage() {
+export default function Page() {
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center space-y-8">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground">AsaDAO A0X</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Building the future of AsaDAO in Base - Hackathon Project
-          </p>
-          <div className="flex justify-center gap-4">
-          <CoalBuyBurn />
-          </div>
-        </div>
+    <div className="min-h-screen p-8 bg-background">
+      <div className="max-w-lg mx-auto text-center space-y-6">
+        <Image src="/LogoAsaDAO.png" alt="AsaDAO Logo" width={560} height={613} className="mx-auto"/>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Building the future of AsaDAO in Base - Hackathon Project
+        </p>
+        <CoalBuyBurn />
+        <button
+          className="px-6 py-3 rounded-2xl bg-indigo-600 text-white text-lg font-semibold shadow-md hover:bg-indigo-700 hover:shadow-lg transition"
+        >
+          Chat With AsaDAO Sensei
+        </button>
       </div>
-    </main>
+    </div>
   )
 }
