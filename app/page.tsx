@@ -1,4 +1,3 @@
-
 import { CoalBuyBurn } from "@/components/CoalBuyBurn"
 import Image from "next/image"
 import type { Metadata } from "next";
@@ -6,13 +5,13 @@ import type { Metadata } from "next";
 export async function generateMetadata(): Promise<Metadata> {
   const embed = {
     "version": "1",
-    "imageUrl": "https://v0-asa-dao-a0-x-base-hackathon.vercel.app/MiniAsaDAO.jpg",
+    "imageUrl": "https://miniapp-asadao.vercel.app/MiniAsaDAO.jpg",
     "button": {
       "title": "AsaDAO", 
       "action": {
         "name": "Open AsaDAO",
         "type": "launch_frame",
-        "url": "https://v0-asa-dao-a0-x-base-hackathon.vercel.app/"
+        "url": "https://miniapp-asadao.vercel.app/"
       }
     }
   };
