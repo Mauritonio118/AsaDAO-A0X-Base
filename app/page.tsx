@@ -41,11 +41,6 @@ export default function Page() {
             </span>
         </p>
         <CoalBuyBurn />
-        <button
-          className="px-6 py-3 rounded-2xl bg-indigo-600 text-white text-lg font-semibold shadow-md hover:bg-indigo-700 hover:shadow-lg transition"
-        >
-          Chat With AsaDAO Sensei
-        </button>
       </div>
     </div>
   )
