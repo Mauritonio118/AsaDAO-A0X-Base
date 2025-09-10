@@ -1,0 +1,26 @@
+[
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "saleAmount", "type": "uint256" },
+      { "internalType": "uint256", "name": "maxPayment", "type": "uint256" }
+    ],
+    "name": "buy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "saleAmount", "type": "uint256" }],
+    "name": "quote",
+    "outputs": [{ "internalType": "uint256", "name": "usdcAmount", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "availableInventory",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
